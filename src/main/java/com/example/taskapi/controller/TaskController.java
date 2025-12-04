@@ -20,4 +20,20 @@ public class TaskController {
     public List<Task> getAll() {
         return repository.findAll();
     }
+
+    @PostMapping
+    public Task createTask(@RequestBody Task task) {
+        return repository.save(task);
+    }
+
+    @PutMapping("/{id}")
+    public Task updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
+        Task task = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        task.setTitle(taskDetails.getTitle());
+        task.setCompleted(taskDetails.isCompleted());
+        return repository.save(task);
+    }
+
 }
